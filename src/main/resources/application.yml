@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: redis-client
+  jackson:
+    default-property-inclusion: non_null
+
+server:
+  port: 8888
