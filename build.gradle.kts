@@ -19,7 +19,6 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation(group = "org.springframework.boot", name = "spring-boot-starter-webflux")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
