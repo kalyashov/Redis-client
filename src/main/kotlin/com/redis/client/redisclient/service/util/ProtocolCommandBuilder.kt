@@ -10,9 +10,9 @@ class ProtocolCommandBuilder {
 
     fun build(command: String): ProtocolCommand {
         return try {
-            Protocol.Command.valueOf(command.toUpperCase())
+            Protocol.Command.valueOf(command.trim().toUpperCase())
         } catch (ex: Exception) {
-            RediSearchProtocolCommand.fromValue(command.toUpperCase())
+            RediSearchProtocolCommand.fromValue(command.trim().toUpperCase())
         }
     }
 }

@@ -13,6 +13,7 @@ class RedisServiceImpl(private val commandBuilder: ProtocolCommandBuilder): Redi
     companion object {
         const val NO_CONNECTION_ERR_MSG = "There is no connection to Redis. Try to connect."
         var jedis: Jedis? = null
+        val commandRegex = "\".+?\"|[^ ]+".toRegex()
     }
 
     /**
@@ -34,8 +35,7 @@ class RedisServiceImpl(private val commandBuilder: ProtocolCommandBuilder): Redi
             val command = commandBuilder.build(commandRaw)
 
             val result = if (!paramsRaw.isNullOrBlank()) {
-                val commandParams = paramsRaw.trim().split("\\s+".toRegex())
-                jedis!!.sendCommand(command, *commandParams.toTypedArray())
+                jedis!!.sendCommand(command, *prepareCommandParams(paramsRaw).toTypedArray())
             }  else {
                 jedis!!.sendCommand(command)
             }
@@ -44,5 +44,15 @@ class RedisServiceImpl(private val commandBuilder: ProtocolCommandBuilder): Redi
         } else {
             throw RuntimeException(NO_CONNECTION_ERR_MSG)
         }
+    }
+
+    private fun prepareCommandParams(paramsRaw: String): List<String> {
+        val commandParams = mutableListOf<String>()
+        commandRegex.findAll(paramsRaw).iterator().forEach {
+            commandParams.add(it.value.trim().replace("\"",""))
+            println(it.value)
+        }
+
+        return commandParams
     }
 }
