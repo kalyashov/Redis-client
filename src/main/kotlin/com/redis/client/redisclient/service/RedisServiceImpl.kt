@@ -50,7 +50,6 @@ class RedisServiceImpl(private val commandBuilder: ProtocolCommandBuilder): Redi
         val commandParams = mutableListOf<String>()
         commandRegex.findAll(paramsRaw).iterator().forEach {
             commandParams.add(it.value.trim().replace("\"",""))
-            println(it.value)
         }
 
         return commandParams
